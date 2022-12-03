@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <title>Client Side</title>
+</head>
+<body>
+   <div class="container">
+    <h1>Post Request form</h1>
+   <p id="name"></p>
+   <form action="">
+    <input class="form-control-md" type="text" name="user-Name" id="userName"> <br/>
+    <input class="btn btn-primary mt-2" type="button" value="Create User" id="btn">
+   </form>
+   </div>
+
+
+   <!-- Js Code here -->
+   <script>
+    
+    
+    // fetch data form own node server - post Request handel
+    fetch('http://localhost:5000/user')
+    .then(res => res.json())
+    .then(data => {
+        // console.log(data[1].name);
+        const name = document.getElementById('name');
+        name.innerHTML = `Name : ${data[1].name}`;
+    })
+    
+    //  post request handel
+    const createUserBtn = document.getElementById('btn');
+
+    createUserBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const user = document.getElementById('userName').value;
+        const userData = {user};
+        fetch('http://localhost:5000/post',{
+            method : 'POST',
+            body : JSON.stringify(userData),
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8', }
+        })
+        .then(res => res.json())
+        .then(data => updateName(data))
+    })
+    const updateName = (data) =>{
+        document.getElementById('name').innerHTML = data.user;
+    }
+
+   </script>
+</body>
+</html>
